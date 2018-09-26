@@ -38,14 +38,14 @@ run command.
 
 The project works only with the terminal, you will encounter errors in other methods.
 
-Go to the project folder and execute the following command.
+Go to the project folder examples and execute the following command.
 ```
-php createGeneration.php 32x32 50000 50
+php generation.php 32x32 50 terminal|array 50000
 ```
 
 Parameters:
 ```
-php createGeneration.php WidthxHeight micro_second maximum_create_generation
+php generation.php WidthxHeight maximum_create_generation output_type micro_second
 ```
 
 You will receive such an answer:
@@ -84,14 +84,14 @@ You will receive such an answer:
 
 ## Running the tests
 
-We have 15 tests (21 assertions) that inspect the factory method and control the output.
+We have 17 tests (23 assertions) that inspect the factory method and control the output.
 
 ```
-phpunit
+phpunit tests
 ```
 
 If you get an answer like the following, everything is alright!
 
 ```
-OK (15 tests, 21 assertions)
+OK (17 tests, 23 assertions)
 ```

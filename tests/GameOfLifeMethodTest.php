@@ -3,13 +3,42 @@ namespace App;
 use App\GameOfLife;
 use PHPUnit\Framework\TestCase;
 class GameOfLifeMethodTest extends TestCase{
+
+
     /**
-     * Test output.
+     * Test Response Array Count output.
      */
-    public function testHandle()
+    public function testHandleArrayCount()
     {
-        $GameOfLife = new GameOfLife();
-        $GameOfLife->setMaxGeneration(20);
+        $GameOfLife = new GameOfLife(32,32);
+        $GameOfLife->setMaxGeneration(5);
+        $GameOfLife->setResponseType('array');
+        $array = $GameOfLife->handle();
+
+        $this->assertEquals(count($array),5);
+    }
+
+
+    /**
+     * Test Array output.
+     */
+    public function testHandleArray()
+    {
+        $GameOfLife = new GameOfLife(32,32);
+        $GameOfLife->setMaxGeneration(5);
+        $GameOfLife->setResponseType('terminal');
+        $array = $GameOfLife->handle();
+        $this->assertInternalType('array',$array);
+    }
+
+
+    /**
+     * Test Terminal output.
+     */
+    public function testHandleTerminal()
+    {
+        $GameOfLife = new GameOfLife(32,32);
+        $GameOfLife->setMaxGeneration(5);
         $GameOfLife->handle();
         $this->expectOutputRegex("[^\.|^\*|^\\n|(.*). Generation]");
     }
@@ -20,16 +49,14 @@ class GameOfLifeMethodTest extends TestCase{
      */
     public function testSet()
     {
-        $GameOfLife = new GameOfLife();
-        $GameOfLife->setWidth(500);
-        $GameOfLife->setHeight(250);
+        $GameOfLife = new GameOfLife(500,250);
         $GameOfLife->setSpeed(50);
         $GameOfLife->setMaxGeneration(100);
 
 
         $this->assertEquals($GameOfLife->__get('width'), 500, 'setWidth Problem.');
         $this->assertEquals($GameOfLife->__get('height'), 250, 'setHeight Problem.');
-        $this->assertEquals($GameOfLife->__get('speed'), 50, 'setSpeed Problem.');
+        $this->assertEquals(GameOfLife::$speed, 50, 'setSpeed Problem.');
         $this->assertEquals($GameOfLife->__get('maxGeneration'), 100, 'setMaxGeneration Problem.');
     }
 
@@ -39,11 +66,11 @@ class GameOfLifeMethodTest extends TestCase{
      */
     public function testReset()
     {
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
 
         $originalWidth = $GameOfLife->__get('width');
         $originalHeight = $GameOfLife->__get('height');
-        $originalSpeed = $GameOfLife->__get('speed');
+        $originalSpeed = GameOfLife::$speed;
         $originalMaxGeneration = $GameOfLife->__get('maxGeneration');
 
         $GameOfLife->setWidth(500);
@@ -55,7 +82,7 @@ class GameOfLifeMethodTest extends TestCase{
 
         $this->assertEquals($originalWidth, $GameOfLife->__get('width'), 'setWidth Reset Problem.');
         $this->assertEquals($originalHeight, $GameOfLife->__get('height'), 'setHeight Reset Problem.');
-        $this->assertEquals($originalSpeed, $GameOfLife->__get('speed'), 'setSpeed Reset Problem.');
+        $this->assertEquals($originalSpeed, GameOfLife::$speed, 'setSpeed Reset Problem.');
         $this->assertEquals($originalMaxGeneration, $GameOfLife->__get('maxGeneration'), 'setMaxGeneration Reset Problem.');
     }
 
@@ -66,7 +93,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetWidthArray()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setWidth([]);
     }
 
@@ -76,7 +103,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetHeightArray()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setHeight([]);
     }
 
@@ -87,7 +114,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetSpeedArray()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setSpeed([]);
     }
 
@@ -98,7 +125,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetMaxGenerationArray()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setMaxGeneration([]);
     }
 
@@ -111,7 +138,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetWidthEmpty()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setWidth('');
     }
 
@@ -121,7 +148,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetHeightEmpty()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setHeight('');
     }
 
@@ -132,7 +159,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetSpeedEmpty()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setSpeed('');
     }
 
@@ -143,7 +170,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetMaxGenerationEmpty()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setMaxGeneration('');
     }
 
@@ -153,7 +180,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetWidth()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setWidth('test');
     }
 
@@ -163,7 +190,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetHeight()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setHeight('test');
     }
 
@@ -174,7 +201,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetSpeed()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setSpeed('test');
     }
 
@@ -185,7 +212,7 @@ class GameOfLifeMethodTest extends TestCase{
     public function testSetMaxGeneration()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $GameOfLife = new GameOfLife();
+        $GameOfLife = new GameOfLife(32,32);
         $GameOfLife->setMaxGeneration('test');
     }
 }
