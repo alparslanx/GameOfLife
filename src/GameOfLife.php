@@ -261,7 +261,7 @@ class GameOfLife
      */
     public function __get($name): bool
     {
-        if(!isset($this->{$name}) || !in_array($name,['width','height','speed','maxGeneration','responseType'])){
+        if(!isset($this->{$name}) || !in_array($name,['width','height','maxGeneration','responseType'])){
             throw new \InvalidArgumentException($name." no parameter.");
         }
 
