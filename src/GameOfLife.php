@@ -77,8 +77,7 @@ class GameOfLife
      */
     public function __construct($width,$height)
     {
-        $this->reset();
-        $this->setWidth($width)->setHeight($height);
+        $this->reset()->setWidth($width)->setHeight($height);
     }
 
     /**
@@ -272,7 +271,7 @@ class GameOfLife
     /**
      * Reset class.
      */
-    public function reset()
+    public function reset(): GameOfLife
     {
         $this->width = 32;
         $this->height = 32;
@@ -282,5 +281,7 @@ class GameOfLife
         $this->outputType = 'terminal';
         self::$generation = 0;
         self::$speed = 50000;
+
+        return $this;
     }
 }
